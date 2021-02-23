@@ -169,9 +169,11 @@ export default async function migrateFromDesigner({
       // Decide how to merge settings
       if (modelType === models.settings.type) {
         const coreSettings = await models.settings.getOrCreate();
+        // Persist some properties
         (entries[0]: Settings)._id = coreSettings._id;
-        (entries[0]: Settings).hasPromptedToMigrateFromDesigner = true;
-        // TODO: need to set hasPromptedOnboarding
+        (entries[0]: Settings).hasPromptedOnboarding = coreSettings.hasPromptedOnboarding;
+        (entries[0]: Settings).coreSettings.hasPromptedOnboarding =
+          coreSettings.coreSettings.hasPromptedOnboarding;
       }
 
       // For each workspace coming from Designer, mark workspace.scope as 'designer'
